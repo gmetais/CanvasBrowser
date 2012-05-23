@@ -15,13 +15,11 @@ CanvasBrowserObject.prototype = {
 	init : function() {
 		this.InternalJSLoader = new CanvasBrowserObject.InternalJSLoader();
 		
-		var callback = function(){alert("callback");};
-		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.TestTest.Test2", callback);
-	    CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Painting");
-        CanvasBrowser.InternalJsLoader.require("CanvasBrowser.Surfing");
-        CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Setting");
-        CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Parsing");
-        CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Deamoning");
+		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Painting");
+		CanvasBrowser.InternalJsLoader.require("CanvasBrowser.Surfing");
+		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Setting");
+		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Parsing");
+		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Deamoning");
 
     },
 	

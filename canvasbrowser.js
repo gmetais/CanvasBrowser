@@ -16,20 +16,29 @@ CanvasBrowserObject.prototype = {
 		this.InternalJSLoader = new CanvasBrowserObject.InternalJSLoader();
 		
 		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Painting", "init");
-		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Surfing");
+		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Surfing", "init");
 		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Setting");
-		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Parsing");
-		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Deamoning");
+		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Parsing", "init");
+		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Deamoning", "init");
 
-		if (this.url) {
-			CanvasBrowser.Surfing.loadPage(this.url);
+		CanvasBrowser.InternalJSLoader.whenReady(function(url){
+			if (url) {
+				CanvasBrowser.Surfing.loadPage(url);
+			}
+		}, this, this.url);
+		
+	},
+	
+	debug : function(object) {
+		if (CanvasBrowser.Setting.debug && console) {
+			console.log(object);
 		}
 	}
-	
 };
 
 CanvasBrowserObject.InternalJSLoader = function() {
-	this.loadedNamespaces = [];
+	this.namespaces = [];
+	this.waitingQueue = [];
 };
 
 CanvasBrowserObject.InternalJSLoader.prototype = {
@@ -42,12 +51,16 @@ CanvasBrowserObject.InternalJSLoader.prototype = {
 		var that = this;
 		
 		// Test if the namespace is already loaded
-		for (var i=1, imax=this.loadedNamespaces.length ; i<imax ; i++) {
-			if (this.loadedNamespaces[i] == namespace) {
-				// Already loaded. Sorry.
+		for (var i=0, imax=this.namespaces.length ; i<imax ; i++) {
+			if (this.namespaces[i].name == namespace) {
+				// Already loaded or asked. Sorry.
 				return;
 			}
 		}
+		this.namespaces.push({
+			name:namespace, 
+			loaded:false}
+		);
 		
 		// Parse the namespace to determine the folder
 		var splitedNamespace = namespace.split(".");
@@ -69,7 +82,12 @@ CanvasBrowserObject.InternalJSLoader.prototype = {
 		file.setAttribute("src", path);
 		file.onload = function() {
 			// The file is now loaded
-			that.loadedNamespaces.push(namespace);
+			for (var i=0, imax=that.namespaces.length ; i<imax ; i++) {
+				if (that.namespaces[i].name == namespace) {
+					that.namespaces[i].loaded = true;
+					break;;
+				}
+			}
 			// If a callback is specified
 			if (callback) {
 				if (typeof callback == "function") {
@@ -80,8 +98,52 @@ CanvasBrowserObject.InternalJSLoader.prototype = {
 					parent[callback]();
 				}
 			}
+			
+			that.checkIfReady();
 		}
+		CanvasBrowser.debug("Loading file : " + file.src);
 		document.body.appendChild(file);
+	},
+	
+	/**
+	 * Executes the function "callback" when there's nothing left to load
+	 * @param callback The function to call
+	 * @param instance The "this" which will be in use when the function is called
+	 * @param [...] Optional arguments to call the function with
+	 */
+	whenReady : function(callback, instance) {
+		var args = [];
+		for (var i=2, max=arguments.length ; i<max ; i++) {
+			args.push(arguments[i]);
+		}
+		this.waitingQueue.push({
+			callback : callback,
+			instance : instance,
+			args : args
+		});
+		
+		this.checkIfReady();
+	},
+	
+	checkIfReady : function() {
+		// If there is a "whenReady" function, we call it
+		if (this.waitingQueue.length > 0) {
+			// Check if all the scripts (=namespaces) are loaded
+			var isReady = true;
+			for (var i=this.namespaces.length ; i-- ; ) {
+				if (this.namespaces[i].loaded == false) {
+					isReady = false;
+					break;
+				}
+			}
+			if (isReady) {
+				var task = this.waitingQueue.shift();
+				task.callback.apply(task.instance, task.args);
+				
+				// And restart (if there's another awaiting task)
+				this.checkIfReady();
+			}
+		}
 	}
 };
 

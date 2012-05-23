@@ -1,0 +1,1 @@
+CanvasBrowser.Setting.debug = true;

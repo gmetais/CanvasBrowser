@@ -21,10 +21,9 @@ CanvasBrowserObject.prototype = {
 		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Parsing");
 		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Deamoning");
 
-    },
-	
-	loadUrl : function(url) {
-		
+		if (this.url) {
+			CanvasBrowser.Surfing.loadPage(this.url);
+		}
 	}
 	
 };

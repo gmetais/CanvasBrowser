@@ -16,7 +16,7 @@ CanvasBrowserObject.prototype = {
 		this.InternalJSLoader = new CanvasBrowserObject.InternalJSLoader();
 		
 		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Painting");
-		CanvasBrowser.InternalJsLoader.require("CanvasBrowser.Surfing");
+		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Surfing");
 		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Setting");
 		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Parsing");
 		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Deamoning");
@@ -55,11 +55,12 @@ CanvasBrowserObject.InternalJSLoader.prototype = {
 		
 		// If the namespace's parent doesn't exist, we need to create it.
 		// As for the grand-parent and the entire family...
-		var parent = document;
+		var parent = window;
 		for (var i=0, imax=splitedNamespace.length ; i<imax ; i++) {
 			if (typeof parent[splitedNamespace[i]] == 'undefined') {
-				parent[splitedNamespace] = {};
+				parent[splitedNamespace[i]] = {};
 			}
+			parent = parent[splitedNamespace[i]];
 		}
 		
 		// And load the file

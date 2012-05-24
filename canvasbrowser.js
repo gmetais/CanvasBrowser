@@ -15,9 +15,9 @@ CanvasBrowserObject.prototype = {
 	init : function() {
 		this.InternalJSLoader = new CanvasBrowserObject.InternalJSLoader();
 		
+		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Setting");
 		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Painting", "init");
 		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Surfing", "init");
-		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Setting");
 		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Parsing", "init");
 		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Deamoning", "init");
 
@@ -30,7 +30,7 @@ CanvasBrowserObject.prototype = {
 	},
 	
 	debug : function(object) {
-		if (CanvasBrowser.Setting.debug && console) {
+		if (CanvasBrowser.Setting && CanvasBrowser.Setting.debug && console) {
 			console.log(object);
 		}
 	}

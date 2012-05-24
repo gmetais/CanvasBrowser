@@ -3,5 +3,12 @@ CanvasBrowser.Surfing.init = function() {
 };
 
 CanvasBrowser.Surfing.loadPage = function(url) {
-	console.log("Loading page : " + url);
+	CanvasBrowser.debug("Loading page : " + url);
+	
+	this.Network.loadFile(url, this.Network.FILE_TYPE_HTML, this.onPageLoaded);
+	
+};
+
+CanvasBrowser.Surfing.onPageLoaded = function(content) {
+	CanvasBrowser.debug("Page loaded !");
 };

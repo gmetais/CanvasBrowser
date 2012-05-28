@@ -9,6 +9,9 @@ CanvasBrowser.Surfing.loadPage = function(url) {
 	
 };
 
-CanvasBrowser.Surfing.onPageLoaded = function(content) {
+CanvasBrowser.Surfing.onPageLoaded = function(headers, content) {
 	CanvasBrowser.debug("Page loaded !");
+	
+	CanvasBrowser.Parsing.Html.parse(content);
+	
 };

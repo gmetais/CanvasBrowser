@@ -20,7 +20,7 @@ CanvasBrowser.Surfing.Network = {
 		var xdr = this.getXDomainRequest();
 		xdr.onload = function() {
 			
-			callback(xdr.responseText);
+			callback(xdr.getAllResponseHeaders().toLowerCase(), xdr.responseText);
 		};
 		xdr.open("GET", url);
 		xdr.send();

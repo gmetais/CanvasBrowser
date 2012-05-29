@@ -5,7 +5,7 @@ CanvasBrowser.Parsing.Html.init = function() {
 
 CanvasBrowser.Parsing.Html.parse = function(html) {
 	
-	var windowObject = {};
+	var htmlDocument = null;
 	var cursor = null;
 	
 	// Convert the HTML to XML ( = strict HTML)
@@ -21,10 +21,15 @@ CanvasBrowser.Parsing.Html.parse = function(html) {
 			tagName = tagName.toUpperCase();
 			
 			// If it's the first element, we add it to the windowObject
-			if (windowObject.length == 0 && tagName != "HTML") {
-				windowObject.document = new HTMLElement("HTML");
-				cursor = windowObject.document;
+			if (htmlDocument == null && tagName != "HTML") {
+				htmlDocument = new HTMLDocument();
+				cursor = htmlDocument;
+				
+				if ()
 			}
+			// TODO : deal with body if we don't have any body
+			if (tagName != "BODY" htmlDocument.getBody() == null)
+			
 			
 			if (cursor == null) {
 				throw "DOM construction error : can't find parent";
@@ -145,6 +150,32 @@ Node.prototype = {
 	}
 };
 
+HTMLDocument = function() {
+	CanvasBrowser.extend(this, Node);
+	this.nodeType = this.DOCUMENT_NODE;
+}
+
+HTMLDocument.prototype = {
+	activeElement : null,
+	
+	getBody : function() {
+		for (var i=0, imax=this.childNodes.length ; i<imax ; i++) {
+			if (this.childNodes[i].getNodeType() == this.ELEMENT_NODE && this.childNodes[i].getTagName() == "BODY") {
+				return this.childNodes[i];
+			}
+		}
+		return null;
+	},
+	
+	getHead : function() {
+		for (var i=0, imax=this.childNodes.length ; i<imax ; i++) {
+			if (this.childNodes[i].getNodeType() == this.ELEMENT_NODE && this.childNodes[i].getTagName() == "HEAD") {
+				return this.childNodes[i];
+			}
+		}
+		return null;
+	}
+}
 
 
 HTMLElement = function(tagName, attrs) {

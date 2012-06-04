@@ -8,7 +8,7 @@ CanvasBrowser.DOMObjects.Node.HTMLDocument.prototype = {
 	
 	getBody : function() {
 		for (var i=0, imax=this.childNodes.length ; i<imax ; i++) {
-			if (this.childNodes[i].getNodeType() == this.ELEMENT_NODE && this.childNodes[i].getTagName() == "BODY") {
+			if (this.childNodes[i].getNodeType() == this.ELEMENT_NODE && this.childNodes[i].getTagName() == "body") {
 				return this.childNodes[i];
 			}
 		}
@@ -17,7 +17,7 @@ CanvasBrowser.DOMObjects.Node.HTMLDocument.prototype = {
 	
 	getHead : function() {
 		for (var i=0, imax=this.childNodes.length ; i<imax ; i++) {
-			if (this.childNodes[i].getNodeType() == this.ELEMENT_NODE && this.childNodes[i].getTagName() == "HEAD") {
+			if (this.childNodes[i].getNodeType() == this.ELEMENT_NODE && this.childNodes[i].getTagName() == "head") {
 				return this.childNodes[i];
 			}
 		}

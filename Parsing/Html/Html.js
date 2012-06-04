@@ -19,13 +19,13 @@ CanvasBrowser.Parsing.Html.parse = function(html) {
 	
 			results += (unary ? "/" : "") + ">";*/
 			
-			tagName = tagName.toUpperCase();
+			tagName = tagName.toLowerCase();
 			
 			// If it's the first tag, it needs to be an HTML tag, and if it's not, we create it
 			if (domTree == null) {
 				domTree = new CanvasBrowser.DOMObjects.Node.HTMLDocument();
 				cursor = domTree;
-				if (tagName == "HTML") {
+				if (tagName == "html") {
 					return;
 				}
 			}
@@ -42,10 +42,10 @@ CanvasBrowser.Parsing.Html.parse = function(html) {
 			}
 		},
 		end: function(tagName) {
-			tagName = tagName.toUpperCase();
+			tagName = tagName.toLowerCase();
 			
 			/*results += "</" + tag + ">";*/
-			if (tagName == "HTML") {
+			if (tagName == "html") {
 				return;
 			}
 			

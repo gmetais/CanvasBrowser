@@ -57,6 +57,10 @@ CanvasBrowser.DOMObjects.Node.prototype = {
 		this.nodeValue = nodeValue;
 	},
 	
+	getChildNodes : function() {
+		return this.childNodes;
+	},
+	
 	appendChild : function(node) {
 		this.childNodes.push(node);
 		node.setParentNode(this);

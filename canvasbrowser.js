@@ -9,6 +9,14 @@ CanvasBrowserObject = function() {
 	if (thisScript.hasAttribute("url")) {
 		this.url = thisScript.getAttribute("url");
 	}
+	
+	// Initialise canvas
+	if (thisScript.hasAttribute("canvas")) {
+		this.canvas = document.getElementById(thisScript.getAttribute("canvas"));
+	} else {
+		// TODO : create a new canvas on the page
+	}
+	
 };
 
 CanvasBrowserObject.prototype = {
@@ -19,7 +27,7 @@ CanvasBrowserObject.prototype = {
 		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Painting", "init");
 		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Surfing", "init");
 		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Parsing", "init");
-		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Deamoning", "init");
+		CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Deamoning");
 
 		CanvasBrowser.InternalJSLoader.whenReady(function(url){
 			if (url) {
@@ -27,6 +35,19 @@ CanvasBrowserObject.prototype = {
 			}
 		}, this, this.url);
 		
+	},
+	
+	extendClass : function(daughter, mother, data) {
+		// Extend by prototype
+		if (mother.prototype) {
+			for (var element in mother.prototype) {
+				if (typeof(daughter[element]) == "undefined") {
+					daughter[element] = mother.prototype[element];
+				}
+			}
+		}
+		// Extend by constructor
+		mother.call(daughter, data);
 	},
 	
 	debug : function(object) {
@@ -95,7 +116,11 @@ CanvasBrowserObject.InternalJSLoader.prototype = {
 					callback();
 				} else {
 					// It's a string (todo : test if it's a string)
-					parent[callback]();
+					if (parent[callback]) {
+						parent[callback]();
+					} else {
+						throw "Exception : can't find method " + callback + " in " + namespace;
+					}
 				}
 			}
 			

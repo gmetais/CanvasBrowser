@@ -11,7 +11,11 @@ CanvasBrowser.Surfing.loadPage = function(url) {
 
 CanvasBrowser.Surfing.onPageLoaded = function(headers, content) {
 	CanvasBrowser.debug("Page loaded !");
+	var htmlDocument = CanvasBrowser.Parsing.Html.parse(content);
+	CanvasBrowser.debug("HTML parsed.");
 	
-	CanvasBrowser.Parsing.Html.parse(content);
+	// TODO : find the CSS files called in the head
 	
+	CanvasBrowser.debug("Starting to paint...");
+	CanvasBrowser.Painting.renderEntirePage(htmlDocument.getBody());
 };

@@ -1,5 +1,5 @@
 CanvasBrowser.DOMObjects.Node.HTMLDocument = function() {
-	CanvasBrowser.extendClass(this, CanvasBrowser.DOMObjects.Node);
+	CanvasBrowser.extendClass(this, CanvasBrowser.DOMObjects.Node.HTMLElement);
 	this.nodeType = this.DOCUMENT_NODE;
 }
 

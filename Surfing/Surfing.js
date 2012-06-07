@@ -16,6 +16,5 @@ CanvasBrowser.Surfing.onPageLoaded = function(headers, content) {
 	
 	// TODO : find the CSS files called in the head
 	
-	CanvasBrowser.debug("Starting to paint...");
-	CanvasBrowser.Painting.renderEntirePage(htmlDocument.getBody());
+	CanvasBrowser.Painting.renderEntirePage(htmlDocument);
 };

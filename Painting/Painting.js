@@ -1,17 +1,21 @@
 CanvasBrowser.Painting.init = function() {
 	CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Painting.TreeRenderer", "init");
+	CanvasBrowser.InternalJSLoader.require("CanvasBrowser.Painting.LayoutCalculator");
 	
 	CanvasBrowser.canvasContext = CanvasBrowser.canvas.getContext('2d');
 };
 
-CanvasBrowser.Painting.renderEntirePage = function(bodyNode, styles) {
+CanvasBrowser.Painting.renderEntirePage = function(htmlNode, styles) {
 	
 	var styles = this.getBrowserDefaultStyles();
 	
-	var renderTree = CanvasBrowser.Painting.TreeRenderer.constructRenderTree(bodyNode, styles);
-	
+	CanvasBrowser.debug("Constructing the render tree...");
+	var renderTree = CanvasBrowser.Painting.TreeRenderer.constructRenderTree(htmlNode, styles);
 	CanvasBrowser.debug(renderTree);
 	
+	CanvasBrowser.debug("Starting layout...");
+	renderTree.layout();
+	CanvasBrowser.debug(renderTree);
 	
 };
 

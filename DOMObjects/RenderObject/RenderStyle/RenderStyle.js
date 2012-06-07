@@ -1,37 +1,19 @@
-CanvasBrowser.DOMObjects.RenderObject.RenderStyle = function(node, styles) {
-	
-	// Compute the computed styles
-	
-	for (var rule in styles) {
-		
-		// We're looking for a direct tag match
-		if (node.getTagName() == rule) {
-			this.addRule(rule, styles[rule]);
-		}
-		
-	}
-	
+CanvasBrowser.DOMObjects.RenderObject.RenderStyle = function() {
+	this.cssRules = [];
+	this.htmlAttributes = [];
 };
 
 CanvasBrowser.DOMObjects.RenderObject.RenderStyle.prototype = {
 	
 	DISPLAY_ENUM : ["none", "inline", "block", "inline-block", "list-item"],
 	
-	// Ordered table of CSS rules by priority (first is lower priority)
-	cssRules : [],
-	
-	color : "",
-	font_size : "",
-	
-	display : "",
-	
-	
-	getRenderMode : function() {
-		
-		// TODO
-		
-		return "inline";
-	},
+	// The css rules defined with CSS
+	cssRules : null,
+	// The HTML "style" attribute
+	styleAttribute : "",
+	// Some other HTML attributes, like bgcolor for exemple.
+	htmlAttributes : null,
+
 	
 	getColor : function() {
 		return this.color;
@@ -41,13 +23,29 @@ CanvasBrowser.DOMObjects.RenderObject.RenderStyle.prototype = {
 		return this.font_size;
 	},
 	
+	getComputedStyle : function(name) {
+		// TODO (http://www.html5rocks.com/en/tutorials/internals/howbrowserswork/#Style_sheet_cascade_order)
+		return "";
+	},
+	
 	addRule : function(rule, properties) {
 		this.cssRules.push({
 			rule : rule, 
 			properties : properties
 		});
 		
-		// TODO : sort rules
+		// TODO : sort rules (last one is the most important)
+	},
+	
+	setStyleAttribute : function(styleAttribute) {
+		this.styleAttribute = styleAttribute;
+	},
+	
+	addHtmlAttribute : function(name, value) {
+		this.htmlAttributes.push({
+			name : name,
+			value : value
+		})
 	}
 	
 };
